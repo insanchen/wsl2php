@@ -1,0 +1,22 @@
+[mysqld]
+basedir                         = /usr
+bind_address                    = 0.0.0.0
+character_set_client_handshake  = FALSE
+character_set_server            = utf8mb4
+collation_server                = utf8mb4_unicode_ci
+datadir                         = /var/lib/mysql
+event_scheduler                 = OFF
+log_error                       = /var/log/mysql/error.log
+log_queries_not_using_indexes   = 1
+log_warnings                    = 1
+long_query_time                 = 3
+performance_schema              = OFF
+pid_file                        = /run/mysqld/mysqld.pid
+port                            = 3306
+skip_external_locking
+skip_name_resolve
+slow_query_log                  = 1
+slow_query_log_file             = /var/log/mysql/slow.log
+socket                          = /run/mysqld/mysqld.sock
+tmpdir                          = /tmp
+user                            = mysql

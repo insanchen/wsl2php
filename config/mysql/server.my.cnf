@@ -1,0 +1,114 @@
+# This configuration is for the production environment.
+# To be used with 8-16 GB RAM and 4-8 CPU cores.
+# Settings marked with UPD should be adjusted accordingly.
+#
+# Diagnostic Tools:
+# https://github.com/major/MySQLTuner-perl
+# https://github.com/BMDan/tuning-primer.sh
+
+[mysql]
+default_character_set           = utf8mb4
+port                            = 3306
+socket                          = /run/mysqld/mysqld.sock
+
+[mysqld]
+# Required Settings
+basedir                         = /usr
+bind_address                    = 0.0.0.0
+character_set_client_handshake  = FALSE
+character_set_server            = utf8mb4
+collation_server                = utf8mb4_unicode_ci
+datadir                         = /var/lib/mysql
+#default_authentication_plugin  = mysql_native_password # Enable in MySQL 8+ or MariaDB 10.6+ for backwards compatibility with common CMSs
+event_scheduler                 = ON # OFF for SLAVE
+max_allowed_packet              = 256M
+max_connect_errors              = 1000000
+performance_schema              = ON # OFF for SLAVE
+pid_file                        = /run/mysqld/mysqld.pid
+port                            = 3306
+skip_external_locking
+skip_name_resolve
+socket                          = /run/mysqld/mysqld.sock
+tmpdir                          = /tmp
+user                            = mysql
+
+# SQL Compatibility Mode
+sql_mode                        = STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+# InnoDB Settings
+default_storage_engine          = InnoDB
+innodb                          = FORCE
+innodb_buffer_pool_instances    = 8     # Use 1 instance per 1GB of InnoDB pool size - max is 64
+innodb_buffer_pool_size         = 8G    # Use up to 70-80% of RAM
+innodb_file_per_table           = 1
+innodb_flush_log_at_trx_commit  = 0
+innodb_flush_method             = O_DIRECT
+innodb_sort_buffer_size         = 4M    # UPD - Defines how much data is read into memory for sorting operations before writing to disk (default is 1M / max is 64M)
+#innodb_io_capacity             = 2000  # Depends on the storage tech - use 2000 for SSD, more for NVMe
+#innodb_io_capacity_max         = 4000  # Usually double the value of innodb_io_capacity
+innodb_log_buffer_size          = 16M
+innodb_log_file_size            = 1G
+innodb_read_io_threads          = 64
+innodb_stats_on_metadata        = 0
+#innodb_temp_data_file_path     = ibtmp1:64M:autoextend:max:20G
+#innodb_thread_concurrency      = 4     # UPD
+innodb_write_io_threads         = 64
+
+# MyISAM Settings
+concurrent_insert               = 2
+key_buffer_size                 = 24M   # UPD
+low_priority_updates            = 1
+#myisam_recover_options         = FORCE,BACKUP
+#query_cache_limit              = 4M    # UPD
+#query_cache_size               = 64M   # UPD
+#query_cache_type               = 1     # UPD
+
+# Connection Settings
+back_log                        = 512
+interactive_timeout             = 180
+max_connections                 = 50    # UPD - Important: high no. of connections = high RAM consumption
+max_statement_time              = 90
+thread_cache_size               = 100
+thread_stack                    = 192K
+wait_timeout                    = 180
+
+# Buffer Settings
+join_buffer_size                = 4M    # UPD
+read_buffer_size                = 3M    # UPD
+read_rnd_buffer_size            = 4M    # UPD
+sort_buffer_size                = 4M    # UPD
+
+# Table Settings
+max_heap_table_size             = 128M
+open_files_limit                = 60000 # UPD
+table_definition_cache          = 40000 # UPD
+table_open_cache                = 40000 # UPD
+tmp_table_size                  = 128M
+
+# Search Settings
+ft_min_word_len                 = 3
+
+# Logging
+log_error                       = /var/log/mysql/error.log
+log_queries_not_using_indexes   = 0
+log_warnings                    = 1
+long_query_time                 = 5
+slow_query_log                  = 0
+slow_query_log_file             = /var/log/mysql/slow.log
+
+# BINARY LOGGING #
+binlog_do_db                    = abctest # Enable for MASTER
+#binlog_expire_logs_seconds     = 1209600 # Keep logs for 14 days (in seconds) - For MySQL 8+ & MariaDB 10.6+ only
+binlog_ignore_db                = information_schema,mysql,performance_schema,phpmyadmin,sys # Enable for MASTER
+expire_logs_days                = 14
+log_bin                         = /var/log/mysql/mysql-bin
+log_bin_index                   = /var/log/mysql/mysql-bin.index
+#replicate_do_db                = abctest # Enable for SLAVE
+#replicate_ignore_db            = information_schema,mysql,performance_schema,phpmyadmin,sys # Enable for SLAVE
+server_id                       = 1
+sync-binlog                     = 1
+
+[mysqldump]
+max_allowed_packet              = 1024M
+quick
+quote_names
