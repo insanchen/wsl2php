@@ -1,0 +1,12 @@
+# Private config (SSH keys, SSL certs, server-specific config, etc.)
+config/private/
+
+# Agent guide — internal instructions, not for public
+AGENTS.md
+
+# Environment (DB credentials, custom vars)
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db

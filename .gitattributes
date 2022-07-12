@@ -1,0 +1,2 @@
+# Keep tracked text files consistent across WSL, Linux, and GitHub.
+* text=auto eol=lf
