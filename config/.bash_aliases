@@ -1,3 +1,6 @@
+# Composer
+export PATH=$PATH:~/.config/composer/vendor/bin:~/.local/bin
+
 # Networking
 alias showip="ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'"
 alias shownet="sudo netstat -tlpn"
