@@ -13,8 +13,8 @@ long_query_time                 = 3
 performance_schema              = OFF
 pid_file                        = /run/mysqld/mysqld.pid
 port                            = 3306
-skip_external_locking
-skip_name_resolve
+skip_external_locking           = 1
+skip_name_resolve               = OFF
 slow_query_log                  = 1
 slow_query_log_file             = /var/log/mysql/slow.log
 socket                          = /run/mysqld/mysqld.sock
