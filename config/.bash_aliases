@@ -61,7 +61,7 @@ mdbexp() {
     if [ -z "$1" ]; then local param=" NOT REGEXP '(^mysql|_schema$|sys)'"; else local param=" IN ('$1')"; fi
     for database in $(sudo mariadb -e "$query$param" | awk -F " " '{if (NR!=1) print $1}'); do
         echo "Dumping $database..."
-        sudo mysqldump --single-transaction --events --routines --flush-privileges $database |
+        sudo mariadb-dump --single-transaction --events --routines --flush-privileges $database |
             sed -e 's/DEFINER[ ]*=[ ]*[^*]*\*/\*/' |
             sed -e "s/\`$database\`.//g" |
             pigz -v9 >$database.sql.gz

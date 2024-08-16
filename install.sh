@@ -221,7 +221,7 @@ function packageinstall() {
         ${SUDO} npm install npm@latest -g
     fi
     if [[ $INSTALL_COMPOSER =~ ^(y|Y)$ ]]; then
-        COMPOSER_INSTALLER_HASH=$(curl -sS https://composer.github.io/installer.sha384sum | cut -d ' ' -f1);
+        COMPOSER_INSTALLER_HASH=$(curl -sS https://composer.github.io/installer.sha384sum | cut -d ' ' -f1)
         php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
             php -r "if (hash_file('sha384', 'composer-setup.php') === '$COMPOSER_INSTALLER_HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" &&
             php composer-setup.php &&
@@ -291,7 +291,9 @@ function config_nginx() {
             ${SUDO} sed -i -e "s|php-|php$PHPVER-|g" $NGINX_SITE_DIR/$SERVER_NAME.conf
         fi
         if [[ $INSTALL_PHPMYADMIN =~ ^(y|Y)$ ]]; then ${SUDO} sed -i -e "s|# include conf-phpmyadmin.conf|include conf-phpmyadmin.conf|g" $NGINX_SITE_DIR/$SERVER_NAME.conf; fi
-        ${SUDO} sed -i -e "s|#add_header|add_header|g" $NGINX_SEC_CONF_FILE
+        ${SUDO} sed -i -e "s|#add_header_server|add_header|g" $NGINX_SEC_CONF_FILE
+    else
+        ${SUDO} sed -i -e "s|#add_header_localhost|add_header|g" $NGINX_SEC_CONF_FILE
     fi
     ${SUDO} chown root:root $NGINX_SSL_DIR/$SERVER_NAME.pem $NGINX_SSL_DIR/$SERVER_NAME.key
     ${SUDO} chmod 600 $NGINX_SSL_DIR/$SERVER_NAME.pem $NGINX_SSL_DIR/$SERVER_NAME.key
@@ -387,9 +389,15 @@ function config_enviroment() {
     ${SUDO} setcap cap_net_raw+p /bin/ping
     ${SUDO} truncate -s 0 /etc/motd
     touch ~/.hushlogin
+    mkdir -p ~/.ssh
     cp config/.bash_aliases ~/.bash_aliases
-    if [ "$SERVER_NAME" != "localhost" ]; then ${SUDO} sed -i -e "s|localhost|$SERVER_NAME|g" ~/.bash_aliases; fi
-    ${SUDO} chmod 644 ~/.bash_aliases
+    if [ "$SERVER_NAME" != "localhost" ]; then
+        ${SUDO} sed -i -e "s|localhost|$SERVER_NAME|g" ~/.bash_aliases
+        ${SUDO} sed -i -e "s|sudo ||g" ~/.bash_aliases
+    else
+        cp config/.ssh/* ~/.ssh/.
+    fi
+    ${SUDO} chmod 644 ~/.ssh/* ~/.bash_aliases
     printf "*** Done ***\n"
 }
 

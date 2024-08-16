@@ -98,9 +98,8 @@ slow_query_log_file             = /var/log/mysql/slow.log
 
 # BINARY LOGGING #
 binlog_do_db                    = app # Enable for MASTER
-#binlog_expire_logs_seconds     = 1209600 # Keep logs for 14 days (in seconds) - For MySQL 8+ & MariaDB 10.6+ only
+binlog_expire_logs_seconds      = 1209600
 binlog_ignore_db                = information_schema,mysql,performance_schema,phpmyadmin,sys # Enable for MASTER
-expire_logs_days                = 14
 log_bin                         = /var/log/mysql/mysql-bin
 log_bin_index                   = /var/log/mysql/mysql-bin.index
 #replicate_do_db                = app # Enable for SLAVE
@@ -108,7 +107,7 @@ log_bin_index                   = /var/log/mysql/mysql-bin.index
 server_id                       = 1
 sync-binlog                     = 1
 
-[mysqldump]
+[mariadb-dump]
 max_allowed_packet              = 1024M
 quick
 quote_names
