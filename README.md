@@ -1,24 +1,28 @@
-# WSL2PHP - Turn WSL into PHP Development Environment
-This script will turn your WSL (Windows Subsystem for Linux) into a PHP development environment.\
-It will install and configure web server (Apache or NGINX), MariaDB, Single/Multiple PHP versions, and other tools like Composer, Git, and more.
+# 🚀 WSL2PHP - Transform WSL into a Powerful PHP Development Environment!
 
-## Quick Start
-You can use the following commands to start the script:
-```
+WSL2PHP is your go-to solution for turning Windows Subsystem for Linux (WSL) into a fully-featured PHP development environment. This script handles the installation and configuration of essential tools like Apache, NGINX, MariaDB, multiple PHP versions, and other must-haves like Composer and Git.
+
+## ⚡ Quick Start
+
+Get started in no time with these simple steps:
+
+```bash
 git clone https://github.com/insanchen/wsl2php.git
 cd wsl2php
 chmod +x install.sh
 ./install.sh
 ```
-When you run the script, it will ask you to use default values as described below.
-```
+
+You’ll be prompted to use default values or customize them. Here's what the defaults look like:
+
+```bash
 SERVER_NAME="localhost"
 SERVER_ALIAS="www.example.com"
 SERVER_ROOT="/var/www"
 SERVER_APP="html"
 SERVER_TZ="Asia/Jakarta"
 INSTALL_PHP=Y
-INSTALL_PHP_VERSION=("5.6" "7.4" "8.3")
+INSTALL_PHP_VERSION=("5.6" "7.4" "8.1" "8.2" "8.3" "8.4")
 INSTALL_NGINX=Y
 INSTALL_APACHE=Y
 INSTALL_MARIADB=Y
@@ -27,33 +31,49 @@ INSTALL_PHPMYADMIN=Y
 INSTALL_NODEJS=Y
 INSTALL_COMPOSER=Y
 ```
+
 Press `Y` to accept the default value or press `N` to enter interactive mode and enter your own value.
 
-After installation, restart WSL2 by running the following command in powershell: `wsl --shutdown` and then start WSL2 again.
+## ✨ Restart WSL After Installation
 
-## Starting up
-You can start the services by running the following commands:
-- `phpboot` to start the PHP service.
-- `ap2boot` to start the Apache2 service.
-- `ngxboot` to start the Nginx service.
-- `mdbboot` to start the MariaDB service.
-- `redisboot` to start the Redis service.
+Once done, restart WSL2 with the following command:
 
-OR simply:
-- `lampx` to start PHP, Apache2, and MariaDB.
-- `lempx` to start PHP, Nginx, and MariaDB.
-- `leampx` to start PHP, Nginx, Apache2, and MariaDB.
-
-## Using multiple PHP versions
-If you are using `Apache2`, you can use the following command to switch to another php version:
-- `phpset5` to switch to php5.6
-- `phpset7` to switch to php7.4
-- `phpset8` to switch to php8.3
-
-You can add/modify more php versions by adding more `phpset` commands in the `~/.bash_aliases` file.
-
-If you are using `Nginx`, you can configure it in the server block by running the following command: `ngxedit`
+```bash
+wsl --shutdown
 ```
+
+## 🛠️ Starting Your Development Environment
+
+Simplify your workflow with these commands:
+
+Individual Services:
+
+-   `phpboot` # Start PHP service
+-   `ap2boot` # Start Apache2
+-   `ngxboot` # Start NGINX
+-   `mdbboot` # Start MariaDB
+-   `redisboot` # Start Redis
+
+Combined Services:
+
+-   `lampx` # Start PHP, Apache2, MariaDB
+-   `lempx` # Start PHP, NGINX, MariaDB
+-   `leampx` # Start PHP, NGINX, Apache2, MariaDB
+
+## 🌈 Switching Between PHP Versions
+
+Use these commands to switch PHP versions when using `Apache2`:
+
+-   `phpset56` # Switch to PHP 5.6
+-   `phpset74` # Switch to PHP 7.4
+-   `phpset81` # Switch to PHP 8.1
+-   `phpset82` # Switch to PHP 8.2
+-   `phpset83` # Switch to PHP 8.3
+-   `phpset84` # Switch to PHP 8.4
+
+For `NGINX`, edit your server block using `ngxedit`:
+
+```bash
 location ~ \.php$ {
     include snippets/fastcgi-php.conf;
     include fastcgi_params;
@@ -61,39 +81,57 @@ location ~ \.php$ {
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 }
 ```
-Edit this line `fastcgi_pass unix:/run/php/php7.4-fpm.sock;` and change to the version you want to use, then run `ngxload` to reload the Nginx configuration.
 
-## Other commands
-Example commands for `Apache2`:
-- `ap2edit` to edit the Apache2 configuration.
-- `ap2load` to reload Apache2 configuration.
-- `ap2stat` to check the status of Apache2.
-- `ap2tail` to tail the Apache2 log.
+Update the `fastcgi_pass` line to the desired PHP version and reload the configuration with:
 
-Example commands for `Nginx`:
-- `ngxedit` to edit the Nginx configuration.
-- `ngxload` to reload Nginx configuration.
-- `ngxstat` to check the status of Nginx.
-- `ngxtail` to tail the Nginx log.
+```bash
+ngxload
+```
 
-Example commands for `MariaDB`:
-- `mdbedit` to edit the MariaDB configuration.
-- `mdbstat` to check the status of MariaDB.
-- `mdbexp <db name>` to export database(s).
-- `mdbimp <file> <db name>` to import database.
+## 🔍 Handy Commands for Config Management
 
-You can find more commands in the `~/.bash_aliases` file and add or edit them to your needs.
+Apache2
 
-## Installing on real server
-This script can also be used to install on real server.
+-   `ap2edit` - Edit configuration
+-   `ap2load` - Reload configuration
+-   `ap2stat` - Check status
+-   `ap2tail` - View logs
 
-There are things you need to do before executing `install.sh` file:
-1. Put your ssl certificate files in the `config/ssl` directory and rename it using your server name for example:
-   - `mydomain.com.pem`
-   - `mydomain.com.key`
-2. Review the server configuration files (all files begin with `server` in each respective directory) and change accordingly.
-3. Run the script using interactive mode and change the `SERVER_NAME` and `SERVER_ALIAS` to your server name.
-   ```
-   Server Name [localhost]: mydomain.com
-   Server Alias [www.example.com]: app.mydomain.com
-   ```
+NGINX
+
+-   `ngxedit` - Edit configuration
+-   `ngxload` - Reload configuration
+-   `ngxstat` - Check status
+-   `ngxtail` - View logs
+
+MariaDB
+
+-   `mdbedit` - Edit configuration
+-   `mdbstat` - Check status
+-   `mdbexp` <db_name> - Export database
+-   `mdbimp` <file> <db_name> - Import database
+
+Explore and customize more commands in the ~/.bash_aliases file.
+
+## 🌐 Deploying on Real Servers
+
+Want to deploy on a real server? Here's what to do before running the script:
+
+1.  Place your SSL certificate files in `config/ssl`:
+    -   `mydomain.com.pem`
+    -   `mydomain.com.key`
+2.  Adjust server configurations in files prefixed with server in their respective directories.
+3.  Run the script in interactive mode to set custom values:
+    ```bash
+    Server Name [localhost]: mydomain.com
+    Server Alias [www.example.com]: app.mydomain.com
+    ```
+
+## 🌟 Why WSL2PHP?
+
+-   Seamless integration of PHP tools and services
+-   Hassle-free multi-version PHP support
+-   Tailored for both local development and real server deployment
+-   Highly customizable configurations
+
+Get started today and experience effortless PHP development on WSL2! 😎

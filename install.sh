@@ -6,7 +6,7 @@ SERVER_ROOT="/var/www"
 SERVER_APP="html"
 SERVER_TZ="Asia/Jakarta"
 INSTALL_PHP=Y
-INSTALL_PHP_VERSION=("5.6" "7.4" "8.3")
+INSTALL_PHP_VERSION=("5.6" "7.4" "8.1" "8.2" "8.3" "8.4")
 INSTALL_NGINX=Y
 INSTALL_APACHE=Y
 INSTALL_MARIADB=Y
@@ -103,6 +103,10 @@ function getpackage() {
     if [[ $INSTALL_PHP =~ ^(y|Y)$ ]]; then
         for ver in ${INSTALL_PHP_VERSION[@]}; do
             PACKAGE="$PACKAGE php$ver-bcmath php$ver-bz2 php$ver-curl php$ver-fpm php$ver-gd php$ver-intl php$ver-ldap php$ver-mbstring php$ver-mysql php$ver-redis php$ver-soap php$ver-xml php$ver-xmlrpc php$ver-zip"
+            if [[ "$ver" == "8.4" ]]; then
+                PACKAGE=${PACKAGE//"php$ver-redis"/}
+                PACKAGE=${PACKAGE//"php$ver-xmlrpc"/}
+            fi
         done
     fi
     if [[ $INSTALL_NGINX =~ ^(y|Y)$ ]]; then PACKAGE="$PACKAGE nginx"; fi
