@@ -103,10 +103,6 @@ function getpackage() {
     if [[ $INSTALL_PHP =~ ^(y|Y)$ ]]; then
         for ver in ${INSTALL_PHP_VERSION[@]}; do
             PACKAGE="$PACKAGE php$ver-bcmath php$ver-bz2 php$ver-curl php$ver-fpm php$ver-gd php$ver-intl php$ver-ldap php$ver-mbstring php$ver-mysql php$ver-redis php$ver-soap php$ver-xml php$ver-xmlrpc php$ver-zip"
-            if [[ "$ver" == "8.4" ]]; then
-                PACKAGE=${PACKAGE//"php$ver-redis"/}
-                PACKAGE=${PACKAGE//"php$ver-xmlrpc"/}
-            fi
         done
     fi
     if [[ $INSTALL_NGINX =~ ^(y|Y)$ ]]; then PACKAGE="$PACKAGE nginx"; fi
