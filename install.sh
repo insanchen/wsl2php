@@ -325,6 +325,10 @@ function config_apache() {
             for ver in "${INSTALL_PHP_VERSION[@]}"; do PHPVER=$ver; done
             ${SUDO} sed -i -e "s|php-|php$PHPVER-|g" $APACHE_SITE_DIR/$SERVER_NAME.conf
         fi
+        if [[ $INSTALL_PHPMYADMIN =~ ^(y|Y)$ ]]; then
+            ${SUDO} cp config/apache/phpmyadmin.conf /etc/apache2/conf-available/phpmyadmin.conf
+            ${SUDO} a2enconf phpmyadmin.conf
+        fi
     fi
     ${SUDO} chown root:root $APACHE_SSL_DIR/$SERVER_NAME.pem $APACHE_SSL_DIR/$SERVER_NAME.key
     ${SUDO} chmod 600 $APACHE_SSL_DIR/$SERVER_NAME.pem $APACHE_SSL_DIR/$SERVER_NAME.key

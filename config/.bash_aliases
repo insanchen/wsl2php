@@ -18,12 +18,12 @@ alias phptail="sudo truncate -s 0 /var/log/php*.log && sudo tail -f /var/log/php
 
 # PHP Apache
 phpunset() { for ver in $(ls /etc/php); do sudo a2disconf php$ver-fpm; done; }
-alias phpset56="phpunset && sudo a2enconf php5.6-fpm && ap2load"
-alias phpset74="phpunset && sudo a2enconf php7.4-fpm && ap2load"
-alias phpset81="phpunset && sudo a2enconf php8.1-fpm && ap2load"
-alias phpset82="phpunset && sudo a2enconf php8.2-fpm && ap2load"
-alias phpset83="phpunset && sudo a2enconf php8.3-fpm && ap2load"
-alias phpset84="phpunset && sudo a2enconf php8.4-fpm && ap2load"
+alias phpset56="phpunset && sudo update-alternatives --set php /usr/bin/php5.6 && sudo a2enconf php5.6-fpm && ap2load"
+alias phpset74="phpunset && sudo update-alternatives --set php /usr/bin/php7.4 && sudo a2enconf php7.4-fpm && ap2load"
+alias phpset81="phpunset && sudo update-alternatives --set php /usr/bin/php8.1 && sudo a2enconf php8.1-fpm && ap2load"
+alias phpset82="phpunset && sudo update-alternatives --set php /usr/bin/php8.2 && sudo a2enconf php8.2-fpm && ap2load"
+alias phpset83="phpunset && sudo update-alternatives --set php /usr/bin/php8.3 && sudo a2enconf php8.3-fpm && ap2load"
+alias phpset84="phpunset && sudo update-alternatives --set php /usr/bin/php8.4 && sudo a2enconf php8.4-fpm && ap2load"
 
 # Redis
 alias redisboot="sudo service redis-server restart"
